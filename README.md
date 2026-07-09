@@ -50,6 +50,23 @@ node .\update-holidays.js
 node .\update-holidays.js --watch
 ```
 
+### GitHub上で自動更新する場合
+
+GitHub Actionsにより、毎月1回、内閣府のCSVを取得して祝日データを更新します。
+
+更新対象:
+
+- `data/syukujitsu.csv`
+- `data/holidays.js`
+
+差分がある場合のみ、次のコミットメッセージで自動コミットされます。
+
+```text
+chore: 祝日データを更新
+```
+
+GitHubのActions画面から、手動で実行することもできます。
+
 ## 開発者向け
 
 ### 技術構成
@@ -75,6 +92,9 @@ calendar/
   data/
     syukujitsu.csv
     holidays.js
+  .github/
+    workflows/
+      update-holidays.yml
   scripts/
     calendar/
       config/
@@ -128,6 +148,10 @@ calendar/
   - 年範囲の補正
 
 ### 祝日更新側の主な責務
+
+- `.github/workflows/update-holidays.yml`
+  - GitHub Actionsで月1回、祝日データ更新処理を実行
+  - 差分がある場合のみ自動コミット
 
 - `update-holidays.js`
   - Node.js用の起動エントリーポイント

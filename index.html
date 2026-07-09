@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>休日対応 万年カレンダー</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="app" aria-label="休日対応 万年カレンダー">
+    <header class="calendar-header">
+      <div>
+        <p class="eyebrow">Perpetual Calendar</p>
+        <h1>休日対応 万年カレンダー</h1>
+      </div>
+      <button class="today-button" id="todayButton" type="button">今日</button>
+    </header>
+
+    <section class="controls" aria-label="年月の選択">
+      <button class="nav-button" id="prevYear" type="button" aria-label="前年へ">«</button>
+      <button class="nav-button" id="prevMonth" type="button" aria-label="前月へ">‹</button>
+      <label class="select-label">
+        <span>年</span>
+        <select id="yearSelect"></select>
+      </label>
+      <label class="select-label">
+        <span>月</span>
+        <select id="monthSelect"></select>
+      </label>
+      <button class="nav-button" id="nextMonth" type="button" aria-label="翌月へ">›</button>
+      <button class="nav-button" id="nextYear" type="button" aria-label="翌年へ">»</button>
+    </section>
+
+    <section class="calendar-panel">
+      <div class="month-title" id="monthTitle" aria-live="polite"></div>
+      <div class="weekdays" aria-hidden="true">
+        <span class="sun">日</span>
+        <span>月</span>
+        <span>火</span>
+        <span>水</span>
+        <span>木</span>
+        <span>金</span>
+        <span class="sat">土</span>
+      </div>
+      <div class="calendar-grid" id="calendarGrid"></div>
+    </section>
+
+    <section class="holiday-list" aria-labelledby="holidayHeading">
+      <div class="holiday-list-header">
+        <h2 id="holidayHeading">この月の祝日・休日</h2>
+        <p class="data-source" id="dataSource" aria-live="polite">祝日データを確認中</p>
+      </div>
+      <ul id="holidayList"></ul>
+    </section>
+  </main>
+
+  <script type="module" src="script.js"></script>
+</body>
+</html>

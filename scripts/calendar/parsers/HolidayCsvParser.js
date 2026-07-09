@@ -1,6 +1,4 @@
-import { DateUtils } from "../utils/DateUtils.js";
-
-export class HolidayCsvParser {
+class HolidayCsvParser {
   parse(text) {
     const holidays = new Map();
     const lines = text.replace(/^\uFEFF/, "").split(/\r?\n/);
@@ -12,7 +10,7 @@ export class HolidayCsvParser {
       const parts = dateText.split("/").map(Number);
       if (parts.length !== 3 || parts.some(Number.isNaN) || !name) continue;
 
-      holidays.set(DateUtils.dateKey(parts[0], parts[1], parts[2]), name.trim());
+      holidays.set(window.DateUtils.dateKey(parts[0], parts[1], parts[2]), name.trim());
     }
 
     return holidays;
@@ -44,3 +42,5 @@ export class HolidayCsvParser {
     return values;
   }
 }
+
+window.HolidayCsvParser = HolidayCsvParser;

@@ -1,6 +1,4 @@
-import { MAX_YEAR, MIN_YEAR } from "../config/calendarConfig.js";
-
-export class DateUtils {
+class DateUtils {
   static pad(number) {
     return String(number).padStart(2, "0");
   }
@@ -16,6 +14,11 @@ export class DateUtils {
   }
 
   static clampYear(year) {
-    return Math.min(Math.max(year, MIN_YEAR), MAX_YEAR);
+    return Math.min(
+      Math.max(year, window.CalendarConfig.minYear),
+      window.CalendarConfig.maxYear
+    );
   }
 }
+
+window.DateUtils = DateUtils;

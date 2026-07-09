@@ -1,28 +1,25 @@
-import { MAX_YEAR, MIN_YEAR } from "../config/calendarConfig.js";
-import { HolidayRepository } from "../repositories/HolidayRepository.js";
-import { DateUtils } from "../utils/DateUtils.js";
-import { CalendarRenderer } from "../views/CalendarRenderer.js";
-
-export class CalendarController {
+class CalendarController {
   constructor(elements) {
     this.elements = elements;
     this.today = new Date();
     this.currentYear = this.today.getFullYear();
     this.currentMonth = this.today.getMonth() + 1;
-    this.holidayRepository = new HolidayRepository();
-    this.renderer = new CalendarRenderer(elements, this.holidayRepository);
+    this.holidayRepository = new window.HolidayRepository();
+    this.renderer = new window.CalendarRenderer(elements, this.holidayRepository);
   }
 
   async initialize() {
     this.populateSelectors();
     this.bindEvents();
+    this.updateDataSource();
+    this.updateSelectors();
     await this.holidayRepository.load();
     this.updateDataSource();
     this.updateSelectors();
   }
 
   populateSelectors() {
-    for (let year = MIN_YEAR; year <= MAX_YEAR; year += 1) {
+    for (let year = window.CalendarConfig.minYear; year <= window.CalendarConfig.maxYear; year += 1) {
       const option = document.createElement("option");
       option.value = String(year);
       option.textContent = `${year}年`;
@@ -57,11 +54,11 @@ export class CalendarController {
 
   moveMonth(diff) {
     const next = new Date(this.currentYear, this.currentMonth - 1 + diff, 1);
-    this.currentYear = DateUtils.clampYear(next.getFullYear());
+    this.currentYear = window.DateUtils.clampYear(next.getFullYear());
     this.currentMonth = next.getMonth() + 1;
 
-    if (next.getFullYear() < MIN_YEAR) this.currentMonth = 1;
-    if (next.getFullYear() > MAX_YEAR) this.currentMonth = 12;
+    if (next.getFullYear() < window.CalendarConfig.minYear) this.currentMonth = 1;
+    if (next.getFullYear() > window.CalendarConfig.maxYear) this.currentMonth = 12;
 
     this.updateSelectors();
   }
@@ -73,7 +70,7 @@ export class CalendarController {
   }
 
   updateSelectors() {
-    this.currentYear = DateUtils.clampYear(this.currentYear);
+    this.currentYear = window.DateUtils.clampYear(this.currentYear);
     this.elements.yearSelect.value = String(this.currentYear);
     this.elements.monthSelect.value = String(this.currentMonth);
     this.render();
@@ -81,11 +78,19 @@ export class CalendarController {
 
   updateDataSource() {
     this.elements.dataSource.textContent = this.holidayRepository.size > 0
-      ? `内閣府CSV ${this.holidayRepository.size}件`
+      ? `${this.dataSourceLabel()} ${this.holidayRepository.size}件`
       : "CSV未読み込み";
+  }
+
+  dataSourceLabel() {
+    return this.holidayRepository.source === "script"
+      ? "内閣府データ"
+      : "内閣府CSV";
   }
 
   render() {
     this.renderer.render(this.currentYear, this.currentMonth);
   }
 }
+
+window.CalendarController = CalendarController;

@@ -11,6 +11,8 @@ class HolidayUpdateApplication {
     this.updater = new HolidayCsvUpdater(
       config.csvUrl,
       config.outputPath,
+      config.dataScriptPath,
+      config.dataGlobalName,
       config.timeZone
     );
     this.scheduler = new MonthlyScheduler(() => this.updater.update(), config.timeZone);

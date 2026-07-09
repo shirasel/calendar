@@ -1,6 +1,4 @@
-import { CalendarController } from "./scripts/calendar/controllers/CalendarController.js";
-
-const controller = new CalendarController({
+const controller = new window.CalendarController({
   yearSelect: document.getElementById("yearSelect"),
   monthSelect: document.getElementById("monthSelect"),
   monthTitle: document.getElementById("monthTitle"),

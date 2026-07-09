@@ -1,7 +1,4 @@
-import { WEEKDAYS } from "../config/calendarConfig.js";
-import { DateUtils } from "../utils/DateUtils.js";
-
-export class CalendarRenderer {
+class CalendarRenderer {
   constructor(elements, holidayRepository) {
     this.elements = elements;
     this.holidayRepository = holidayRepository;
@@ -16,10 +13,10 @@ export class CalendarRenderer {
     this.elements.calendarGrid.setAttribute("role", "grid");
 
     const firstDay = new Date(year, month - 1, 1);
-    const startDate = DateUtils.addDays(firstDay, -firstDay.getDay());
+    const startDate = window.DateUtils.addDays(firstDay, -firstDay.getDay());
 
     for (let index = 0; index < 42; index += 1) {
-      const displayDate = DateUtils.addDays(startDate, index);
+      const displayDate = window.DateUtils.addDays(startDate, index);
       this.elements.calendarGrid.appendChild(this.createDayCell(displayDate, month, holidays));
     }
 
@@ -44,7 +41,7 @@ export class CalendarRenderer {
     const year = displayDate.getFullYear();
     const month = displayDate.getMonth() + 1;
     const day = displayDate.getDate();
-    const key = DateUtils.dateKey(year, month, day);
+    const key = window.DateUtils.dateKey(year, month, day);
     const holidayName = holidays.get(key);
     const dayOfWeek = displayDate.getDay();
     const cell = document.createElement("div");
@@ -60,7 +57,7 @@ export class CalendarRenderer {
     cell.setAttribute("role", "gridcell");
     cell.setAttribute(
       "aria-label",
-      `${year}年${month}月${day}日 ${WEEKDAYS[dayOfWeek]}曜日${holidayName ? ` ${holidayName}` : ""}`
+      `${year}年${month}月${day}日 ${window.CalendarConfig.weekdays[dayOfWeek]}曜日${holidayName ? ` ${holidayName}` : ""}`
     );
 
     const number = document.createElement("span");
@@ -115,10 +112,12 @@ export class CalendarRenderer {
     const dayOfWeek = new Date(holiday.year, holiday.month - 1, holiday.day).getDay();
 
     date.className = "holiday-date";
-    date.textContent = `${holiday.month}/${holiday.day}(${WEEKDAYS[dayOfWeek]})`;
+    date.textContent = `${holiday.month}/${holiday.day}(${window.CalendarConfig.weekdays[dayOfWeek]})`;
     name.textContent = holiday.name;
 
     item.append(date, name);
     return item;
   }
 }
+
+window.CalendarRenderer = CalendarRenderer;

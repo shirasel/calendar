@@ -1,7 +1,9 @@
 class CalendarRenderer {
-  constructor(elements, holidayRepository) {
+  constructor(elements, holidayRepository, memoRepository, onDayDoubleClick) {
     this.elements = elements;
     this.holidayRepository = holidayRepository;
+    this.memoRepository = memoRepository;
+    this.onDayDoubleClick = onDayDoubleClick;
     this.today = new Date();
   }
 
@@ -51,14 +53,20 @@ class CalendarRenderer {
     if (dayOfWeek === 0) classes.push("sunday");
     if (dayOfWeek === 6) classes.push("saturday");
     if (holidayName) classes.push("holiday");
+    if (this.memoRepository.has(key)) classes.push("has-memo");
     if (this.isToday(year, month, day)) classes.push("today");
 
     cell.className = classes.join(" ");
+    cell.tabIndex = 0;
     cell.setAttribute("role", "gridcell");
+    cell.setAttribute("title", "ダブルクリックでメモを入力");
     cell.setAttribute(
       "aria-label",
       `${year}年${month}月${day}日 ${window.CalendarConfig.weekdays[dayOfWeek]}曜日${holidayName ? ` ${holidayName}` : ""}`
     );
+    cell.addEventListener("dblclick", () => {
+      this.onDayDoubleClick({ key, year, month, day });
+    });
 
     const number = document.createElement("span");
     number.className = "day-number";
@@ -70,6 +78,13 @@ class CalendarRenderer {
       label.className = "holiday-name";
       label.textContent = holidayName;
       cell.appendChild(label);
+    }
+
+    if (this.memoRepository.has(key)) {
+      const memoLabel = document.createElement("span");
+      memoLabel.className = "memo-badge";
+      memoLabel.textContent = "メモあり";
+      cell.appendChild(memoLabel);
     }
 
     return cell;

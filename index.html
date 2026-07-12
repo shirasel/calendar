@@ -54,12 +54,30 @@
     </section>
   </main>
 
+  <dialog class="memo-dialog" id="memoDialog" aria-labelledby="memoDialogTitle">
+    <form class="memo-dialog-content" method="dialog">
+      <header class="memo-dialog-header">
+        <h2 id="memoDialogTitle">日付メモ</h2>
+      </header>
+      <label class="memo-field">
+        <span>内容</span>
+        <textarea id="memoText" rows="7" placeholder="予定やメモを入力"></textarea>
+      </label>
+      <footer class="memo-actions">
+        <button class="memo-button secondary" id="memoCancelButton" type="button">キャンセル</button>
+        <button class="memo-button primary" id="memoSaveButton" type="button">保存</button>
+      </footer>
+    </form>
+  </dialog>
+
   <script src="scripts/calendar/config/calendarConfig.js"></script>
   <script src="data/holidays.js"></script>
   <script src="scripts/calendar/utils/DateUtils.js"></script>
   <script src="scripts/calendar/parsers/HolidayCsvParser.js"></script>
   <script src="scripts/calendar/repositories/HolidayRepository.js"></script>
+  <script src="scripts/calendar/repositories/DayMemoRepository.js"></script>
   <script src="scripts/calendar/views/CalendarRenderer.js"></script>
+  <script src="scripts/calendar/views/DayMemoDialog.js"></script>
   <script src="scripts/calendar/controllers/CalendarController.js"></script>
   <script src="script.js"></script>
 </body>

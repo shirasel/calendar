@@ -9,7 +9,12 @@ const controller = new window.CalendarController({
   prevMonthButton: document.getElementById("prevMonth"),
   nextMonthButton: document.getElementById("nextMonth"),
   nextYearButton: document.getElementById("nextYear"),
-  todayButton: document.getElementById("todayButton")
+  todayButton: document.getElementById("todayButton"),
+  memoDialog: document.getElementById("memoDialog"),
+  memoDialogTitle: document.getElementById("memoDialogTitle"),
+  memoText: document.getElementById("memoText"),
+  memoCancelButton: document.getElementById("memoCancelButton"),
+  memoSaveButton: document.getElementById("memoSaveButton")
 });
 
 controller.initialize();

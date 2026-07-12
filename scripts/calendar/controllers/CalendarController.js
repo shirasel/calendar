@@ -5,7 +5,24 @@ class CalendarController {
     this.currentYear = this.today.getFullYear();
     this.currentMonth = this.today.getMonth() + 1;
     this.holidayRepository = new window.HolidayRepository();
-    this.renderer = new window.CalendarRenderer(elements, this.holidayRepository);
+    this.memoRepository = new window.DayMemoRepository();
+    this.renderer = new window.CalendarRenderer(
+      elements,
+      this.holidayRepository,
+      this.memoRepository,
+      (dateInfo) => this.memoDialog.open(dateInfo)
+    );
+    this.memoDialog = new window.DayMemoDialog(
+      {
+        dialog: elements.memoDialog,
+        title: elements.memoDialogTitle,
+        textarea: elements.memoText,
+        cancelButton: elements.memoCancelButton,
+        saveButton: elements.memoSaveButton
+      },
+      this.memoRepository,
+      () => this.render()
+    );
   }
 
   async initialize() {

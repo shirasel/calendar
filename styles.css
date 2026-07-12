@@ -167,6 +167,16 @@ select {
   padding: 10px;
   background: #ffffff;
   position: relative;
+  cursor: pointer;
+  transition: border-color 150ms ease, box-shadow 150ms ease, transform 150ms ease;
+}
+
+.day-cell:hover,
+.day-cell:focus-visible {
+  border-color: var(--accent);
+  box-shadow: 0 10px 24px rgba(15, 118, 110, 0.16);
+  outline: none;
+  transform: translateY(-2px);
 }
 
 .day-cell.outside {
@@ -193,6 +203,17 @@ select {
   background: var(--today-bg);
 }
 
+.day-cell.has-memo::after {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--accent);
+  content: "";
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
 .day-number {
   display: inline-flex;
   align-items: center;
@@ -210,6 +231,102 @@ select {
   font-size: 0.78rem;
   font-weight: 700;
   line-height: 1.35;
+}
+
+.memo-badge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  margin-top: 8px;
+  border-radius: 999px;
+  padding: 0 8px;
+  color: #ffffff;
+  background: var(--accent);
+  font-size: 0.72rem;
+  font-weight: 800;
+}
+
+.memo-dialog {
+  width: min(440px, calc(100% - 32px));
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 0;
+  color: var(--text);
+  background: #ffffff;
+  box-shadow: 0 24px 70px rgba(15, 23, 42, 0.22);
+}
+
+.memo-dialog::backdrop {
+  background: rgba(15, 23, 42, 0.36);
+}
+
+.memo-dialog-content {
+  display: grid;
+  gap: 16px;
+  padding: 20px;
+}
+
+.memo-dialog-header h2 {
+  font-size: 1.15rem;
+}
+
+.memo-field {
+  display: grid;
+  gap: 8px;
+  color: var(--muted);
+  font-size: 0.86rem;
+  font-weight: 800;
+}
+
+.memo-field textarea {
+  width: 100%;
+  min-height: 150px;
+  resize: vertical;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 12px;
+  color: var(--text);
+  font: inherit;
+  line-height: 1.6;
+}
+
+.memo-field textarea:focus {
+  border-color: var(--accent);
+  outline: 3px solid rgba(15, 118, 110, 0.16);
+}
+
+.memo-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.memo-button {
+  min-height: 40px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 0 16px;
+  cursor: pointer;
+  font-weight: 800;
+}
+
+.memo-button.primary {
+  border-color: var(--accent);
+  color: #ffffff;
+  background: var(--accent);
+}
+
+.memo-button.primary:hover {
+  background: var(--accent-dark);
+}
+
+.memo-button.secondary {
+  color: var(--text);
+  background: #ffffff;
+}
+
+.memo-button.secondary:hover {
+  border-color: var(--accent);
 }
 
 .holiday-list {
@@ -302,8 +419,19 @@ select {
     padding: 7px;
   }
 
+  .day-cell.has-memo::after {
+    top: 7px;
+    right: 7px;
+  }
+
   .holiday-name {
     font-size: 0.68rem;
+  }
+
+  .memo-badge {
+    min-height: 20px;
+    padding: 0 6px;
+    font-size: 0.64rem;
   }
 
   .holiday-list-header {

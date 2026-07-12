@@ -24,6 +24,12 @@ class DayMemoRepository {
     this.saveAll(memos);
   }
 
+  delete(dateKey) {
+    const memos = this.loadAll();
+    delete memos[dateKey];
+    this.saveAll(memos);
+  }
+
   loadAll() {
     try {
       return JSON.parse(localStorage.getItem(this.storageKey)) || {};

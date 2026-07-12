@@ -14,6 +14,7 @@ const controller = new window.CalendarController({
   memoDialogTitle: document.getElementById("memoDialogTitle"),
   memoText: document.getElementById("memoText"),
   memoCancelButton: document.getElementById("memoCancelButton"),
+  memoDeleteButton: document.getElementById("memoDeleteButton"),
   memoSaveButton: document.getElementById("memoSaveButton")
 });
 

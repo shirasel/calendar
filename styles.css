@@ -301,6 +301,10 @@ select {
   gap: 10px;
 }
 
+.memo-action-spacer {
+  flex: 1;
+}
+
 .memo-button {
   min-height: 40px;
   border: 1px solid var(--line);
@@ -327,6 +331,22 @@ select {
 
 .memo-button.secondary:hover {
   border-color: var(--accent);
+}
+
+.memo-button.danger {
+  border-color: #fecaca;
+  color: #b91c1c;
+  background: #fff1f2;
+}
+
+.memo-button.danger:hover:not(:disabled) {
+  border-color: #f87171;
+  background: #ffe4e6;
+}
+
+.memo-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
 }
 
 .holiday-list {

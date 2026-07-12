@@ -18,6 +18,7 @@ class CalendarController {
         title: elements.memoDialogTitle,
         textarea: elements.memoText,
         cancelButton: elements.memoCancelButton,
+        deleteButton: elements.memoDeleteButton,
         saveButton: elements.memoSaveButton
       },
       this.memoRepository,

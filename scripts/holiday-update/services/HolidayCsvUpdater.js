@@ -14,7 +14,7 @@ class HolidayCsvUpdater {
 
   async update() {
     const bytes = await this.fetchCsv();
-    await this.saveCsv(bytes);
+    await this.writeFileIfChanged(this.outputPath, bytes);
     await this.saveDataScript(bytes);
     this.logUpdated(bytes.length);
   }
@@ -33,18 +33,14 @@ class HolidayCsvUpdater {
     return bytes;
   }
 
-  async saveCsv(bytes) {
-    await fs.mkdir(path.dirname(this.outputPath), { recursive: true });
-    await fs.writeFile(this.outputPath, bytes);
-  }
-
   async saveDataScript(bytes) {
     const text = new TextDecoder("shift_jis").decode(bytes);
     const entries = this.parseCsv(text);
-    const script = `"use strict";\nwindow.${this.dataGlobalName} = ${JSON.stringify(entries, null, 2)};\n`;
+    const script = this.toUtf8LfText(
+      `"use strict";\nwindow.${this.dataGlobalName} = ${JSON.stringify(entries, null, 2)};\n`
+    );
 
-    await fs.mkdir(path.dirname(this.dataScriptPath), { recursive: true });
-    await fs.writeFile(this.dataScriptPath, script, "utf8");
+    await this.writeFileIfChanged(this.dataScriptPath, Buffer.from(script, "utf8"));
   }
 
   parseCsv(text) {
@@ -92,6 +88,33 @@ class HolidayCsvUpdater {
 
   dateKey(year, month, day) {
     return `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+  }
+
+  toUtf8LfText(text) {
+    return `${text.replace(/^\uFEFF/, "").replace(/\r\n?/g, "\n").replace(/\n*$/, "")}\n`;
+  }
+
+  async writeFileIfChanged(filePath, bytes) {
+    const currentBytes = await this.readFileOrNull(filePath);
+    if (currentBytes && Buffer.compare(currentBytes, bytes) === 0) {
+      return false;
+    }
+
+    await fs.mkdir(path.dirname(filePath), { recursive: true });
+    await fs.writeFile(filePath, bytes);
+    return true;
+  }
+
+  async readFileOrNull(filePath) {
+    try {
+      return await fs.readFile(filePath);
+    } catch (error) {
+      if (error.code === "ENOENT") {
+        return null;
+      }
+
+      throw error;
+    }
   }
 
   logUpdated(byteLength) {
